@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">movies</string>
+    <string name="api_key" >13c262ccd9f27666f88ef1ed7ae5ab29</string>
+    <string name="url" >https://api.themoviedb.org/3/</string>
 </resources>

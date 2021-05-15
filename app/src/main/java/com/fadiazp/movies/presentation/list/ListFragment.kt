@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.fadiazp.movies.R
 import com.fadiazp.movies.databinding.ListFragmentBinding
 import com.fadiazp.movies.presentation.common.app
@@ -15,6 +16,7 @@ import com.fadiazp.movies.presentation.list.di.ListFragmentModule
 
 class ListFragment : Fragment() {
 
+    private var binding: ListFragmentBinding? = null
     private lateinit var component: ListFragmentComponent
     private val viewModel by lazy { getViewModel { component.viewModel } }
 
@@ -22,23 +24,34 @@ class ListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: ListFragmentBinding =
-            DataBindingUtil.inflate(inflater, R.layout.list_fragment, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.list_fragment, container, false
+        )
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         component = app.component.plus(ListFragmentModule())
 
         viewModel.getMovies(16)
 
-        val adapter = MoviesAdapter()
-        binding.moviesRecyclerView.adapter = adapter
-
+        val adapter = MoviesAdapter(MoviesListener { idMovie ->
+            this.findNavController().navigate(
+                ListFragmentDirections.actionListToDetail(idMovie)
+            )
+        })
 
         viewModel.movies.observe(viewLifecycleOwner, {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
             }
         })
 
-        return binding.root
+        binding?.apply {
+            lifecycleOwner = this@ListFragment
+            moviesRecyclerView.adapter = adapter
+        }
     }
 }

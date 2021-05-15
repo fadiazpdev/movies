@@ -1,36 +1,53 @@
 package com.fadiazp.movies.presentation.list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.fadiazp.movies.R
-import com.fadiazp.movies.network.Movie
+import com.fadiazp.movies.databinding.LayoutMovieItemViewBinding
+import com.fadiazp.movies.domain.DomainMovie
 import com.fadiazp.movies.presentation.list.MoviesAdapter.MoviesViewHolder
 
-class MoviesAdapter : RecyclerView.Adapter<MoviesViewHolder>() {
-    var data = listOf<Movie>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class MoviesAdapter(
+    private val listener: MoviesListener
+) : ListAdapter<DomainMovie, MoviesViewHolder>(MoviesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view =
-            layoutInflater.inflate(R.layout.layout_movie_item_view, parent, false)
-        return MoviesViewHolder(view)
+        return MoviesViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        val item = data[position]
-        holder.titleTextView.text = item.title
+        val item = getItem(position)
+        holder.bind(item,listener)
     }
 
-    override fun getItemCount() = data.size
+    class MoviesViewHolder private constructor(
+        private val binding: LayoutMovieItemViewBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-    class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
+        fun bind(item: DomainMovie, listener: MoviesListener) {
+            binding.movie = item
+            binding.click = listener
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): MoviesViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = LayoutMovieItemViewBinding.inflate(layoutInflater, parent, false)
+                return MoviesViewHolder(binding)
+            }
+        }
     }
+}
+
+class MoviesDiffCallback : DiffUtil.ItemCallback<DomainMovie>() {
+    override fun areItemsTheSame(oldItem: DomainMovie, newItem: DomainMovie) = oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: DomainMovie, newItem: DomainMovie) = oldItem == newItem
+}
+
+class MoviesListener(val click: (id: Int) -> Unit) {
+    fun onClick(movie: DomainMovie) = click(movie.id)
 }

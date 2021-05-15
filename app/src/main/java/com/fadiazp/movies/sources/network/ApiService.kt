@@ -1,4 +1,4 @@
-package com.fadiazp.movies.network
+package com.fadiazp.movies.sources.network
 
 import retrofit2.http.GET
 import retrofit2.http.Query

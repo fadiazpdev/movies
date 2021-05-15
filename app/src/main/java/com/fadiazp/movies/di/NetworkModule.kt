@@ -2,7 +2,7 @@ package com.fadiazp.movies.di
 
 import android.app.Application
 import com.fadiazp.movies.R
-import com.fadiazp.movies.network.Network
+import com.fadiazp.movies.sources.network.Network
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -14,7 +14,7 @@ class NetworkModule {
     @Singleton
     @Provides
     @Named("url")
-    fun baseUrlProvider(
+    fun urlProvider(
         app: Application
     ) = app.getString(R.string.url)
 

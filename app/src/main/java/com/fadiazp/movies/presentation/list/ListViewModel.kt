@@ -4,22 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fadiazp.movies.data.sources.RemoteDataSource
-import com.fadiazp.movies.network.Movie
+import com.fadiazp.movies.domain.DomainMovie
+import com.fadiazp.movies.interactors.GetMoviesInteractor
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
-    private val remoteDataSource: RemoteDataSource
+    private val getMovies: GetMoviesInteractor
 ) : ViewModel() {
 
-    private val _movies = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>>
+    private val _movies = MutableLiveData<List<DomainMovie>>()
+    val movies: LiveData<List<DomainMovie>>
         get() = _movies
 
     fun getMovies(genre: Int) {
         viewModelScope.launch {
-           _movies.value = remoteDataSource.getMovies(genre)
+            _movies.value = getMovies.invoke(genre)
         }
     }
 }

@@ -1,11 +1,14 @@
-package com.fadiazp.movies.network
+package com.fadiazp.movies.sources.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class Network(url:String) {
+class Network @Inject constructor(
+    url: String
+) {
 
     private val client = HttpLoggingInterceptor().run {
         level = HttpLoggingInterceptor.Level.BODY

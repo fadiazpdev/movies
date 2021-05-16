@@ -5,5 +5,5 @@ import dagger.Subcomponent
 
 @Subcomponent(modules = [DetailFragmentModule::class])
 interface DetailFragmentComponent {
-    val detailViewModel: DetailViewModel
+    val viewModel: DetailViewModel
 }

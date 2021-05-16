@@ -7,6 +7,7 @@
         <variable
             name="movie"
             type="com.fadiazp.movies.domain.DomainMovie" />
+
         <variable
             name="click"
             type="com.fadiazp.movies.presentation.list.MoviesListener" />
@@ -28,7 +29,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:url="@{movie.posterPath}"/>
+            app:url="@{movie.posterPath}" />
 
         <TextView
             android:id="@+id/titleTextView"

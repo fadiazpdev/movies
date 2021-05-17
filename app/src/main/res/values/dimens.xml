@@ -3,5 +3,7 @@
 
     <dimen name="spacing_empty">0dp</dimen>
     <dimen name="spacing_xxmedium">8dp</dimen>
+    <dimen name="spacing_xxxmedium">16dp</dimen>
+    <dimen name="spacing_huge">20dp</dimen>
 
 </resources>

@@ -1,8 +1,7 @@
 package com.fadiazp.movies.presentation.detail.di
 
-import com.fadiazp.movies.data.repositories.MoviesRepository
+import com.fadiazp.movies.data.repositories.Repository
 import com.fadiazp.movies.interactors.GetMovieByIdInteractor
-import com.fadiazp.movies.interactors.GetMoviesInteractor
 import com.fadiazp.movies.presentation.detail.DetailViewModel
 import dagger.Module
 import dagger.Provides
@@ -17,6 +16,6 @@ class DetailFragmentModule {
 
     @Provides
     fun getMoviesInteractorProvider(
-        repository: MoviesRepository
+        repository: Repository
     ) = GetMovieByIdInteractor(repository)
 }

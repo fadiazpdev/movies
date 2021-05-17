@@ -10,15 +10,15 @@ import javax.inject.Inject
 class MoviesRepository @Inject constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource
-) {
+) : Repository {
 
-    suspend fun getMovies(genre: Int): List<DomainMovie> {
+    override suspend fun getMovies(genre: Int): List<DomainMovie> {
         val moviesFromNetwork = remoteDataSource.getMovies(genre)
         localDataSource.insertMovies(moviesFromNetwork.toLocal())
         return moviesFromNetwork.toDomain()
     }
 
-    suspend fun getMovieById(movieId: Int): DomainMovie {
+    override suspend fun getMovieById(movieId: Int): DomainMovie {
         return localDataSource.getMovieById(movieId).toDomain()
     }
 }

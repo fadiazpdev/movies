@@ -2,6 +2,7 @@ package com.fadiazp.movies.data.repositories
 
 import com.fadiazp.movies.data.sources.FakeLocalDataSource
 import com.fadiazp.movies.data.sources.FakeRemoteDataSource
+import com.fadiazp.movies.remoteMoviesList
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -12,7 +13,7 @@ import org.junit.Test
 class MoviesRepositoryTest {
 
     companion object {
-        const val adventureMovies = 16
+        const val animationMovies = 16
         const val posterPathUrl = "https://image.tmdb.org/t/p/w185"
         const val idMovieTest = 811367
     }
@@ -32,25 +33,25 @@ class MoviesRepositoryTest {
     @Test
     fun testingGetMoviesMethod() = runBlocking {
 
-        val result = repository.getMovies(adventureMovies)
+        val result = repository.getMovies(animationMovies)
 
         assertEquals(
-            fakeRemote.remoteMoviesList[0].id,
+            remoteMoviesList[0].id,
             fakeLocal.localMoviesList[0].id
         )
         assertEquals(
-            fakeRemote.remoteMoviesList[0].id,
+            remoteMoviesList[0].id,
             result[0].id
         )
         assertEquals(
             result[0].posterPath,
-            "$posterPathUrl${fakeRemote.remoteMoviesList[0].posterPath}"
+            "$posterPathUrl${remoteMoviesList[0].posterPath}"
         )
     }
 
     @Test
     fun testingGetMovieById() = runBlocking {
-        repository.getMovies(adventureMovies)
+        repository.getMovies(animationMovies)
 
         val result = repository.getMovieById(idMovieTest)
 
@@ -60,7 +61,7 @@ class MoviesRepositoryTest {
         )
         assertEquals(
             result.backdropPath,
-            "$posterPathUrl${fakeRemote.remoteMoviesList[0].backdropPath}"
+            "$posterPathUrl${remoteMoviesList[0].backdropPath}"
         )
     }
 }
